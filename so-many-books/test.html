@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>so many boooooooks</title>
+    <script src="../common.js" defer></script>
+
+</head>
+<style>
+    #content {
+        display: flex;
+    }
+
+    #person {
+        background: darkseagreen;
+        width: 50vw;
+    }
+
+    #bookList {
+        width: 50vw;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    ul {
+        /*border: 1px solid green;*/
+        list-style: none;
+        /*width: 800px;*/
+        display: flex;
+        padding: 0;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    li {
+        border: 1px solid darkseagreen;
+        /*writing-mode: vertical-lr;*/
+        /*text-orientation: upright;*/
+        width: fit-content;
+    }
+
+</style>
+<body>
+
+<div id="emptySpace" style="height: 10px;"></div>
+<div id="content">
+    <div id="bookList">
+        <h3>humanity</h3>
+        <ul id="humanity">
+        </ul>
+
+        <h3>philosophy</h3>
+        <ul id="philosophy"></ul>
+
+        <h3>math</h3>
+        <ul id="math"></ul>
+    </div>
+    <div id="person">
+        books
+    </div>
+</div>
+
+<script>
+    fetch('./aladin_books.json')
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            const math = data['수학'];
+            const humanity = data['인문학'];
+            const philosophy = data['철학'];
+
+            math.forEach(item => {
+                const title = document.createElement("li");
+                // const author = document.createElement("li");
+
+                title.textContent = item.title;
+                // author.textContent = item.author;
+
+                document.getElementById("math").appendChild(title);
+            });
+
+            humanity.forEach(item => {
+                const title = document.createElement("li");
+                title.textContent = item.title;
+                document.getElementById("humanity").appendChild(title);
+            });
+
+            philosophy.forEach(item => {
+                const title = document.createElement("li");
+                title.textContent = item.title;
+                document.getElementById("philosophy").appendChild(title);
+            });
+
+            // 옵저버 부착
+            document.querySelectorAll('#bookList li').forEach(li => {
+                observer.observe(li);
+            })
+        })
+        .catch(err => console.error('JSON 불러오기 실패: ', err));
+
+    function scrollReact() {}
+    const bookList = document.getElementById("bookList");
+    bookList.addEventListener("scroll", () => {
+        // console.log("현재 스크롤 위치: ", bookList.scrollTop);
+    });
+
+    const emptySpace = document.getElementById('emptySpace');
+    const emptySpaceRect = emptySpace.getBoundingClientRect();
+    const bookListRect = bookList.getBoundingClientRect();
+
+    const offsetFromTop = emptySpaceRect.bottom - bookListRect.top;
+    const offsetFromBottom = bookListRect.height - offsetFromTop;
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    console.log("닿음", entry.target.textContent);
+                }
+            });
+        },
+        {
+            root: document.querySelector("#bookList"),
+            rootMargin: `-${offsetFromTop}px 0px -${offsetFromBottom}px 0px`,
+            threshold: 0
+        }
+    );
+
+
+</script>
+</body>
+</html>
