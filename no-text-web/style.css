@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+}
+
+section {
+    height: 100vh;
+}
+
+.imgArea {
+    display: flex;
+    height: 300px;
+    margin: 0 auto;
+}
+
+img {
+    height: 100%;
+}
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.runImg {
+    aspect-ratio: 5 / 2;
+    object-fit: cover;
+    object-position: bottom;
+}
+
+.reverse {
+    transform: scaleX(-1);
+}
+
+.emptyArea {
+    height: 300px;
+}
