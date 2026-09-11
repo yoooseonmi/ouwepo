@@ -23,9 +23,27 @@
 </div>
 
 <script>
+
+    document.getElementById("result").addEventListener('click', () => {
+        location.href = "../";
+    })
+
+    const decoder = document.createElement("textarea");
+    function decodeHtml(str) {
+        decoder.innerHTML = str;
+        return decoder.value;
+    }
+
     fetch('./aladin_books.json')
         .then(res => res.json())
         .then(data => {
+            Object.values(data).forEach(books => {
+                books.forEach(book => {
+                    for (const key in book) {
+                        if (typeof book[key] === "string") book[key] = decodeHtml(book[key]);
+                    }
+                });
+            });
             console.log(data);
             const math = data['수학'];
             const humanity = data['인문학'];
@@ -111,6 +129,8 @@
 
         }
     }, { passive: true });
+
+
 
 </script>
 </body>
