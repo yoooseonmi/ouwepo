@@ -94,6 +94,23 @@
         }
     );
 
+    let lastScrollTop = bookList.scrollTop;
+    bookList.addEventListener('scroll', () => {
+        const currentScrollTop = bookList.scrollTop;
+        const direction = currentScrollTop > lastScrollTop ? 'down' : 'up';
+        lastScrollTop = currentScrollTop;
+
+        if(direction === 'down') {
+            console.log("down");
+            document.getElementById("result").style.fontWeight = "400";
+            document.getElementById("result").style.color = "cornflowerblue";
+        } else {
+            console.log("up");
+            document.getElementById("result").style.fontWeight = "bold";
+            document.getElementById("result").style.color = "black";
+
+        }
+    }, { passive: true });
 
 </script>
 </body>

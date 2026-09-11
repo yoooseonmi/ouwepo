@@ -2,18 +2,34 @@
     margin: 0;
 }
 
+:root {
+    --img-h: 300px;
+}
+
 section {
     height: 100vh;
 }
 
 .imgArea {
     display: flex;
-    height: 300px;
+    height: var(--img-h);
     margin: 0 auto;
 }
 
+/* Safari: flex item이 원본 이미지 크기 기준으로 줄어들거나 늘어나지 않게 */
+.imgArea > * {
+    flex-shrink: 0;
+}
+
+.imgArea a {
+    display: block;
+}
+
+/* Safari는 인라인 <a> 안의 height: 100%를 계산하지 못하므로 px로 고정 */
 img {
-    height: 100%;
+    display: block;
+    height: var(--img-h);
+    width: auto;
 }
 
 .layout {
@@ -22,8 +38,9 @@ img {
     justify-content: space-between;
 }
 
+/* aspect-ratio 5 / 2 대신 가로를 직접 지정 (Safari flex item 버그 회피) */
 .runImg {
-    aspect-ratio: 5 / 2;
+    width: calc(var(--img-h) * 5 / 2);
     object-fit: cover;
     object-position: bottom;
 }
